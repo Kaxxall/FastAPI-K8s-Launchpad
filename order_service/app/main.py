@@ -1,7 +1,11 @@
 import httpx
+import os
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 from typing import List
+
+
+INVENTORY_SERVICE_URL = os.getenv("INVENTORY_SERVICE_URL", "http://127.0.0.1:8000")
 
 
 class OrderIn(BaseModel):
@@ -24,9 +28,6 @@ app = FastAPI(
 )
 
 db_orders: List[OrderOut] = []
-
-
-INVENTORY_SERVICE_URL = "http://localhost:8000"
 
 
 @app.post("/orders", response_model=OrderOut, status_code=status.HTTP_201_CREATED, tags=["Orders"])
